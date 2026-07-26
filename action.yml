@@ -1,0 +1,50 @@
+name: 'spec-proof: AC Compliance Check'
+description: 'Automatically verify PR code changes against Jira story Acceptance Criteria using GPT-4o'
+author: 'spec-proof'
+
+branding:
+  icon: 'shield'
+  color: 'purple'
+
+inputs:
+  jira-base-url:
+    description: 'Your Jira Cloud base URL (e.g. https://your-company.atlassian.net)'
+    required: true
+  jira-email:
+    description: 'Jira account email for API authentication'
+    required: true
+  jira-token:
+    description: 'Jira API token — create at https://id.atlassian.com/manage-profile/security/api-tokens'
+    required: true
+  openai-api-key:
+    description: >
+      OpenAI API key (optional). If not provided, the action uses GitHub Models
+      (GPT-4o via Azure AI) authenticated with your GITHUB_TOKEN — no extra
+      secrets needed. Provide this only if you prefer direct OpenAI billing.
+    required: false
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    required: false
+    default: '${{ github.token }}'
+  story-id-pattern:
+    description: 'Regex pattern to extract the Jira story ID from the PR title'
+    required: false
+    default: '[A-Z]+-\d+'
+  max-diff-lines:
+    description: 'Max lines of diff to send to AI (keeps token costs low)'
+    required: false
+    default: '2000'
+  fail-on-missing:
+    description: 'Set to "true" to fail the action (block merge) when ACs are missing'
+    required: false
+    default: 'false'
+
+outputs:
+  compliance-status:
+    description: 'Overall status: pass | partial | fail | cannot-verify'
+  story-id:
+    description: 'The Jira story ID that was checked'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

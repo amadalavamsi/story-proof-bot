@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# spec-proof: AC Compliance Check
+#
+# Copy this file into your repository at:
+#   .github/workflows/spec-proof.yml
+#
+# Required secrets (Settings → Secrets → Actions):
+#   JIRA_BASE_URL   — e.g. https://your-company.atlassian.net
+#   JIRA_EMAIL      — your Jira account email
+#   JIRA_TOKEN      — Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens
+#
+# ✅ No OpenAI key needed — uses GitHub Models (GPT-4o via Azure AI)
+#    authenticated with the automatic GITHUB_TOKEN.
+#    Same Azure infrastructure as GitHub Copilot. No extra cost.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: spec-proof AC Compliance Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write  # Required to post/update comments on PRs
+  contents: read
+
+jobs:
+  compliance-check:
+    name: Verify ACs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛡️ spec-proof — AC Compliance Check
+        uses: your-org/spec-proof-action@v1   # ← update after publishing
+        with:
+          jira-base-url: ${{ secrets.JIRA_BASE_URL }}
+          jira-email: ${{ secrets.JIRA_EMAIL }}
+          jira-token: ${{ secrets.JIRA_TOKEN }}
+          # github-token is provided automatically — no OpenAI key needed
+
+          # Optional settings:
+          # story-id-pattern: '[A-Z]+-\d+'   # matches PROJ-123, TEAM-456, etc.
+          # max-diff-lines: '2000'            # cap tokens sent to AI
+          # fail-on-missing: 'false'          # 'true' to block merge on missing ACs
+
+          # Only add this if you want to use your own OpenAI account instead:
+          # openai-api-key: ${{ secrets.OPENAI_API_KEY }}
