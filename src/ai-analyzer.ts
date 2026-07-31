@@ -142,7 +142,13 @@ Respond ONLY with this JSON (no extra text):
     if (statuses.every(s => s === 'implemented')) return 'pass';
     if (statuses.every(s => s === 'missing')) return 'fail';
     if (statuses.every(s => s === 'cannot-verify')) return 'cannot-verify';
-    if (statuses.some(s => s === 'missing' || s === 'partial')) return 'partial';
+
+    // implemented + cannot-verify only = pass (cannot-verify is not a failure)
+    if (statuses.every(s => s === 'implemented' || s === 'cannot-verify')) return 'pass';
+
+    // any missing = fail if ALL non-implemented are missing, otherwise partial
+    if (statuses.some(s => s === 'missing') && !statuses.some(s => s === 'partial')) return 'fail';
+
     return 'partial';
   }
 }

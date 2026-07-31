@@ -36,7 +36,7 @@ async function run(): Promise<void> {
     const { owner, repo } = context.repo;
 
     core.info(`─────────────────────────────────────`);
-    core.info(`spec-proof AC Compliance Check`);
+    core.info(`story-proof-bot — AC Compliance Check`);
     core.info(`PR #${prNumber}: ${prTitle}`);
     core.info(`─────────────────────────────────────`);
 
@@ -110,7 +110,7 @@ async function run(): Promise<void> {
     core.setOutput('compliance-status', result.overallStatus);
 
     // ── 7. Post PR comment (upsert — update if already exists) ─────────────
-    const commentBody = COMMENT_MARKER + '\n' + buildPRComment(result, prTitle);
+    const commentBody = COMMENT_MARKER + '\n' + buildPRComment(result, prTitle, jiraBaseUrl);
 
     const { data: existingComments } = await octokit.rest.issues.listComments({
       owner,
