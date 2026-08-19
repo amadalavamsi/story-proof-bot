@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axios} from 'axios';
 import * as core from '@actions/core';
 import { JiraClient } from '../src/jira-client';
 
