@@ -19,6 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🤖 Run Pipeline Assistant
-        uses: amadalavamsi/pipeline-assistant@v1
+        uses: amadalavamsi/pipeline-assistant@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
