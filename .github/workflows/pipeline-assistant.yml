@@ -23,13 +23,16 @@ jobs:
         with:
           repository: amadalavamsi/pipeline-assistant
           path: .pipeline-assistant
-      # Install GitHub Copilot CLI
-      # NOTE: npm package exposes binary as 'github-copilot-cli', not 'copilot'
-      # The symlink below makes `copilot` resolve correctly on the runner PATH
+      # Install the real GitHub Copilot CLI (same binary used locally, Linux x64 build)
+      # The npm package @githubnext/github-copilot-cli is an old v0.1.x that does NOT support --acp
       - name: Install GitHub Copilot CLI
         run: |
-          npm install -g @githubnext/github-copilot-cli
-          sudo ln -sf "$(which github-copilot-cli)" /usr/local/bin/copilot
+          COPILOT_VERSION="1.0.80"
+          curl -fsSL "https://github.com/github/copilot-cli/releases/download/v${COPILOT_VERSION}/copilot-linux-x64.tar.gz" \
+            -o copilot.tar.gz
+          tar -xzf copilot.tar.gz
+          sudo mv copilot /usr/local/bin/copilot
+          sudo chmod +x /usr/local/bin/copilot
           copilot --version
 
       - name: 🤖 Run Pipeline Assistant
