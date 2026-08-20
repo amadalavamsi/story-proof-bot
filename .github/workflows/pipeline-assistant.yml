@@ -23,6 +23,6 @@ jobs:
       - name: Install GitHub Copilot CLI
         run: npm install -g @githubnext/github-copilot-cli
       - name: 🤖 Run Pipeline Assistant
-        uses: amadalavamsi/pipeline-assistant@v1.0.0
+        uses: amadalavamsi/pipeline-assistant@v1.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
