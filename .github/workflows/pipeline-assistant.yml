@@ -43,3 +43,4 @@ jobs:
           agent-args: '--acp --stdio'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
