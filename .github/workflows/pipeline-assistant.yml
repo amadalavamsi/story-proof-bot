@@ -39,8 +39,11 @@ jobs:
         uses: amadalavamsi/pipeline-assistant@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Pass the FAILING workflow's run ID — NOT this assistant workflow's run ID
+          run-id: ${{ github.event.workflow_run.id }}
+          repository: ${{ github.event.workflow_run.repository.full_name }}
           agent-command: 'copilot'
           agent-args: '--acp --stdio'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
