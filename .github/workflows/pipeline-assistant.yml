@@ -23,12 +23,17 @@ jobs:
         with:
           repository: amadalavamsi/pipeline-assistant
           path: .pipeline-assistant
-      # Install GitHub Copilot CLI before the action runs
+      # Install GitHub Copilot CLI
+      # NOTE: npm package exposes binary as 'github-copilot-cli', not 'copilot'
+      # The symlink below makes `copilot` resolve correctly on the runner PATH
       - name: Install GitHub Copilot CLI
-        run: npm install -g @githubnext/github-copilot-cli
-      
+        run: |
+          npm install -g @githubnext/github-copilot-cli
+          sudo ln -sf "$(which github-copilot-cli)" /usr/local/bin/copilot
+          copilot --version
+
       - name: 🤖 Run Pipeline Assistant
-        uses: amadalavamsi/pipeline-assistant@v1.0.1
+        uses: amadalavamsi/pipeline-assistant@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           agent-command: 'copilot'
