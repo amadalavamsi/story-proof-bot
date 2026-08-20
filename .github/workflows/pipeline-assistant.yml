@@ -18,11 +18,20 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout pipeline-assistant action
+        uses: actions/checkout@v4
+        with:
+          repository: amadalavamsi/pipeline-assistant
+          path: .pipeline-assistant
       # Install GitHub Copilot CLI before the action runs
       - name: Install GitHub Copilot CLI
         run: npm install -g @githubnext/github-copilot-cli
+      
       - name: 🤖 Run Pipeline Assistant
         uses: amadalavamsi/pipeline-assistant@v1.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          agent-command: 'copilot'
+          agent-args: '--acp --stdio'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
